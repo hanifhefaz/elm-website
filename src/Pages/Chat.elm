@@ -153,14 +153,19 @@ toHistogram =
 view : Model -> Document Msg
 view model =
     { title = "Main"
-    , body = [div [ style "text-align" "center" ]
-        [ h2 [ style "background-color" "rgb(0, 149, 217)",style "width" "50%",style "margin" "auto", style "height" "20%", style "padding" "40px", style "color" "white"] [ text "Please ask your question to our agent belwo" ]
-        , br [][]
-        , Html.form[ onSubmit Search ][
+    , body = [div [ class "row py-5" ]
+            [ div [ class "col-lg-12 mx-auto" ]
+                [ div [ class "text-white p-5 shadow-sm rounded banner" ]
+                    [ h1 [ class "display-4" ]
+                        [ text "Ask our Agent" ]
+                    , p [ class "lead" ]
+                        [ text "Do you have any question, regarding our products?" ]
+                        , div [ style "text-align" "center" ]
+        [ Html.form[ onSubmit Search ][
          textarea [ style "width" "50%",style "margin" "auto", style "height" "150px", style "padding" "10px", onInput TypedSearch, value model.searchString ] []
         , br [][]
         , br [][]
-        , button [style "background-color" "blue", style "border" "2px blue",style "padding" "4px",style "color" "white"] [ text "Ask me" ]]
+        , button [class "btn btn-dark px-5 py-3 text-uppercase"] [ text "Ask me" ]]
         , br [][]
         , div [ style "width" "50%",style "background-color" "#32CD32",style "margin" "auto", style "height" "20%", style "padding" "40px" ]
             [ case model.searchResult of
@@ -173,5 +178,9 @@ view model =
                 Searched (Just answer) ->
                     text answer.answer
             ]
-        ]]
+        ]
+                    ]
+                ]
+            ]
+        ]
     }

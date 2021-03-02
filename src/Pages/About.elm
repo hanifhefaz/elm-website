@@ -1,9 +1,10 @@
 module Pages.About exposing (Params, Model, Msg, page)
 
+import Html exposing (..)
 import Spa.Document exposing (Document)
 import Spa.Page as Page exposing (Page)
-import Spa.Url as Url exposing (Url)
-import Html exposing(..)
+import Spa.Url exposing (Url)
+import Html.Attributes exposing (..)
 
 
 page : Page Params Model Msg
@@ -32,5 +33,17 @@ type alias Params =
 view : Url Params -> Document Msg
 view { params } =
     { title = "About"
-    , body = [ text "Homepage" ]
+    , body = [ div [ class "row py-5" ]
+            [ div [ class "col-lg-12 mx-auto" ]
+                [ div [ class "text-white p-5 shadow-sm rounded banner" ]
+                    [ h1 [ class "display-4" ]
+                        [ text "About Us" ]
+                    , p [ class "lead" ]
+                        [ text "Do you have any question, regarding our products?" ]
+                        , div [ style "text-align" "center" ][]
+
+                ]
+            ]
+            ]
+    ]
     }
