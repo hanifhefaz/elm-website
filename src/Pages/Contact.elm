@@ -1,8 +1,10 @@
 module Pages.Contact exposing (Params, Model, Msg, page)
 
+import Html exposing (..)
 import Spa.Document exposing (Document)
 import Spa.Page as Page exposing (Page)
-import Spa.Url as Url exposing (Url)
+import Spa.Url exposing (Url)
+import Html.Attributes exposing (..)
 
 
 page : Page Params Model Msg
@@ -30,6 +32,21 @@ type alias Params =
 
 view : Url Params -> Document Msg
 view { params } =
-    { title = "Contact"
-    , body = []
+    { title = "About"
+    , body = [ div [ class "row py-5" ]
+            [ div [ class "col-lg-12 mx-auto" ]
+                [ div [ class "text-white p-5 shadow-sm rounded banner" ]
+                    [ h1 [ class "display-4" ]
+                        [ text "Contact Us" ]
+                    , p [ class "lead" ]
+                        [ text "Do you have any question, regarding our products?" ]
+                        , div [ style "text-align" "center" ][]
+
+                ]
+                , p [ class "lead", style "text-align" "center" ]
+                        [ text "You can contact us only in case, if our agent did not answered your questions." ]
+            ]
+
+            ]
+    ]
     }
