@@ -116,7 +116,7 @@ score firstDict answer prevBest =
             Just this
 
         Just (Score _ { size, matches }) ->
-            if thisMatches > matches && thisMatches >=3 then
+            if thisMatches > matches && thisMatches >=2 then
                 Just this
 
             else if thisMatches == matches then

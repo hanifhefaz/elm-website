@@ -43,8 +43,9 @@ view { params } =
                         , div [ style "text-align" "center" ][]
 
                 ]
-                , p [ class "lead", style "text-align" "center" ]
-                        [ text "You can contact us only in case, if our agent did not answered your questions." ]
+                , br[][]
+                , p [ class "display-8", style "text-align" "center" ]
+                        [ text "You can contact us only in case, if our agent did not answered your questions. Please use our built in model in the website, by clicking in the chat menu at the top right of the navbar. If your question was not answered there, then you can contact us via email or phone. Please note that you can ask anything to our agent. He is smart, and will try to answer your quesiont as soon as possible." ]
             ]
 
             ]

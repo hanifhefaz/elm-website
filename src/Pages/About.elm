@@ -43,6 +43,9 @@ view { params } =
                         , div [ style "text-align" "center" ][]
 
                 ]
+                , br[][]
+                , p [ class "display-8", style "text-align" "center" ]
+                        [ text "E-asy is an online shopping system, where you can buy different things. If you have any questions regarding our products or services, we highly recommend to chat to our agent."]
             ]
             ]
     ]
