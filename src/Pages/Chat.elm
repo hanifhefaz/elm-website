@@ -53,7 +53,7 @@ update msg model =
             { model | searchString = str }
 
         Search ->
-            { model | searchResult = Searched <| Word2DictMatcher.findRelevantDict (model.searchString |> Word2DictMatcher.tokenize |> Word2DictMatcher.toHistogram) Data.data }
+            { model | searchResult = Searched <| Word2DictMatcher.findRelevantDict (model.searchString |> Word2DictMatcher.tokenize |> Word2DictMatcher.toHistogram) QuestionsBank.data }
 
 
 view : Model -> Document Msg
