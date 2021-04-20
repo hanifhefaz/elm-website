@@ -9,7 +9,8 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onSubmit)
 import Html
-import Data
+import Word2DictMatcher exposing (..)
+import QuestionsBank
 
 
 
@@ -43,7 +44,7 @@ type Msg
 
 type SearchResult
     = NotSearched
-    | Searched (Maybe Data.Answer)
+    | Searched (Maybe QuestionsBank.Answer)
 
 update : Msg -> Model -> Model
 update msg model =
@@ -52,226 +53,7 @@ update msg model =
             { model | searchString = str }
 
         Search ->
-            { model | searchResult = Searched <| findRelevantDict (model.searchString |> tokenize |> toHistogram) Data.data }
-
-
-type alias Sentence =
-    String
-
-
-type alias Tokens =
-    List String
-
-
-type alias Histogram =
-    Dict String Int
-
-
-{-| This will make a dictionary from a sentence
--}
-wordsDict : Tokens -> Histogram
-wordsDict vocabulary =
-    vocabulary
-        |> List.concatMap tokenize
-        |> toHistogram
-
-
-
-{-| Finds the sentences with the most occurances from a search string
-Returns all the words from the matched sentence as a dictionary, which you can later convert to Html msg.
--}
-findRelevantDict : Dict String Int -> List Data.Answer -> Maybe Data.Answer
-findRelevantDict firstDict answers =
-    case List.foldl (score firstDict) Nothing answers of
-        Just (Score answer _) ->
-            Just answer
-
-        Nothing ->
-            Nothing
-
-
-type Score
-    = Score Data.Answer{ size : Int, matches : Int }
-
-
-score : Histogram -> Data.Answer -> Maybe Score -> Maybe Score
-score firstDict answer prevBest =
-    let
-        thisHistogram =
-            answer.question|> tokenize |> toHistogram
-
-        thisSize =
-            Dict.size thisHistogram
-
-        thisMatches =
-            thisHistogram
-                |> Dict.intersect firstDict
-                |> Dict.size
-
-        this =
-            Score answer { size = thisSize, matches = thisMatches }
-    in
-    case prevBest of
-        Nothing ->
-            Just this
-
-        Just (Score _ { size, matches }) ->
-            if thisMatches > matches && thisMatches >=2 then
-                Just this
-
-            else if thisMatches == matches then
-                if thisSize < size then
-                    Just this
-
-                else
-                    prevBest
-
-            else
-                prevBest
-
-
-tokenize : Sentence -> Tokens
-tokenize =
-    String.filter (\c -> c == ' ' || Char.isAlpha c)
-        >> String.toLower
-        >> String.words
-        >> List.filter (\x -> not <| List.member x stopWords)
-
-stopWords : Tokens
-stopWords =
-    [ "a"
-    , "able"
-    , "about"
-    , "across"
-    , "after"
-    , "all"
-    , "almost"
-    , "also"
-    , "am"
-    , "among"
-    , "an"
-    , "and"
-    , "any"
-    , "are"
-    , "as"
-    , "at"
-    , "be"
-    , "because"
-    , "been"
-    , "but"
-    , "by"
-    , "can"
-    , "cannot"
-    , "could"
-    , "dear"
-    , "did"
-    , "do"
-    , "does"
-    , "either"
-    , "else"
-    , "ever"
-    , "every"
-    , "for"
-    , "from"
-    , "get"
-    , "got"
-    , "had"
-    , "has"
-    , "have"
-    , "he"
-    , "her"
-    , "hers"
-    , "him"
-    , "his"
-    , "how"
-    , "however"
-    , "i"
-    , "if"
-    , "in"
-    , "into"
-    , "is"
-    , "it"
-    , "its"
-    , "just"
-    , "least"
-    , "let"
-    , "like"
-    , "likely"
-    , "may"
-    , "me"
-    , "might"
-    , "most"
-    , "must"
-    , "my"
-    , "neither"
-    , "no"
-    , "nor"
-    , "not"
-    , "of"
-    , "off"
-    , "often"
-    , "on"
-    , "only"
-    , "or"
-    , "other"
-    , "our"
-    , "own"
-    , "rather"
-    , "said"
-    , "say"
-    , "says"
-    , "she"
-    , "should"
-    , "since"
-    , "so"
-    , "some"
-    , "than"
-    , "that"
-    , "the"
-    , "their"
-    , "them"
-    , "then"
-    , "there"
-    , "these"
-    , "they"
-    , "this"
-    , "tis"
-    , "to"
-    , "too"
-    , "twas"
-    , "us"
-    , "wants"
-    , "was"
-    , "we"
-    , "were"
-    , "what"
-    , "when"
-    , "where"
-    , "which"
-    , "while"
-    , "who"
-    , "whom"
-    , "why"
-    , "will"
-    , "with"
-    , "would"
-    , "yet"
-    , "you"
-    , "your"
-    ]
-
-toHistogram : Tokens -> Histogram
-toHistogram =
-    List.foldl
-        (\key dict ->
-            case Dict.get key dict of
-                Nothing ->
-                    Dict.insert key 1 dict
-
-                Just count ->
-                    Dict.insert key (count + 1) dict
-        )
-        Dict.empty
+            { model | searchResult = Searched <| Word2DictMatcher.findRelevantDict (model.searchString |> Word2DictMatcher.tokenize |> Word2DictMatcher.toHistogram) Data.data }
 
 
 view : Model -> Document Msg
