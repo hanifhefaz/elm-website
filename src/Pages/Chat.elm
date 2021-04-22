@@ -112,7 +112,7 @@ view model =
             [ div [ class "col-lg-12 mx-auto" ]
                 [ div [ class "text-white p-5 shadow-sm rounded banner" ]
                     [ h1 [ class "display-4" ]
-                        [ text "Ask our Agent" ]
+                        [ text "Ask our Agent Anything" ]
                     , p [ class "lead" ]
                         [ text "Do you have any question, regarding our products?" ]
                     ]
